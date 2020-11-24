@@ -5,14 +5,16 @@ It takes just less than 150 lines code
 
 ## Usage
 
-`go run main.go`
-
-## Check
-
-`curl --proxy "socks5://127.0.0.1:1080" https://blog.xingez.me/ip.php`
-
-> https://blog.xingez.me/ip.php is an api that obtains the requestor's IP address
+`go run socks5.go`
 
 ## Build
 
-`go build main.go`
+`go build socks5.go`
+
+## Check
+```
+go run socks5.go
+curl --proxy "socks5://127.0.0.1:1080" https://blog.xingez.me/ip.php
+```
+
+> https://blog.xingez.me/ip.php is an api that obtains the requestor's IP address
