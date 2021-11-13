@@ -3,16 +3,26 @@ package main
 import (
 	"encoding/binary"
 	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"net"
 )
 
 func main() {
-	server, err := net.Listen("tcp", ":1080")
+	var port int
+	var addr string
+	flag.IntVar(&port, "p", 1080, "Socks5 listening port, default: 1080")
+	flag.StringVar(&addr, "a", "0.0.0.0", "Socks5 listening address, default: 0.0.0.0")
+
+	flag.Parse()
+
+	server, err := net.Listen("tcp", addr + ":" + fmt.Sprintf("%d", port))
 	if err != nil {
 		fmt.Printf("Listen failed: %v\n", err)
 		return
+	} else {
+		fmt.Printf("Listening at: %s", addr + ":" + fmt.Sprintf("%d", port))
 	}
 
 	for {
