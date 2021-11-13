@@ -1,6 +1,7 @@
 NAME=socks5
 BINDIR=bin
 GOBUILD=CGO_ENABLED=0 go build -ldflags '-w -s -buildid='
+VERSION=1.1.0
 # The -w and -s flags reduce binary sizes by excluding unnecessary symbols and debug info
 # The -buildid= flag makes builds reproducible
 
@@ -9,10 +10,10 @@ all: linux macos-amd64 macos-arm64 win64 win32
 linux:
 	GOARCH=amd64 GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
 
-macos-amd64:
+darwin-amd64:
 	GOARCH=amd64 GOOS=darwin $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
 
-macos-arm64:
+darwin-arm64:
 	GOARCH=arm64 GOOS=darwin $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
 
 win64:
@@ -21,32 +22,14 @@ win64:
 win32:
 	GOARCH=386 GOOS=windows $(GOBUILD) -o $(BINDIR)/$(NAME)-$@.exe
 
-
-test: test-linux test-macos-amd64 test-macos-arm64 test-win64 test-win32
-
-test-linux:
-	GOARCH=amd64 GOOS=linux go test
-
-test-macos-amd64:
-	GOARCH=amd64 GOOS=darwin go test
-
-test-macos-arm64:
-	GOARCH=arm64 GOOS=darwin go test
-
-test-win64:
-	GOARCH=amd64 GOOS=windows go test
-
-test-win32:
-	GOARCH=386 GOOS=windows go test
-
-releases: linux macos-amd64 macos-arm64 win64 win32
+releases: linux darwin-amd64 darwin-arm64 win64 win32
 	chmod +x $(BINDIR)/$(NAME)-*
-	tar czf $(BINDIR)/$(NAME)-linux.tgz -C $(BINDIR) $(NAME)-linux
-	gzip $(BINDIR)/$(NAME)-linux
-	gzip $(BINDIR)/$(NAME)-macos-amd64
-	gzip $(BINDIR)/$(NAME)-macos-arm64
-	zip -m -j $(BINDIR)/$(NAME)-win32.zip $(BINDIR)/$(NAME)-win32.exe
-	zip -m -j $(BINDIR)/$(NAME)-win64.zip $(BINDIR)/$(NAME)-win64.exe
+	tar zcf $(BINDIR)/$(NAME)-linux-$(VERSION).tar.gz -C $(BINDIR) $(NAME)-linux
+	tar zcf $(BINDIR)/$(NAME)-darwin-amd64-$(VERSION).tar.gz -C $(BINDIR) $(NAME)-darwin-amd64
+	tar zcf $(BINDIR)/$(NAME)-darwin-arm64-$(VERSION).tar.gz -C $(BINDIR) $(NAME)-darwin-arm64
+	zip -j $(BINDIR)/$(NAME)-win32-$(VERSION).zip $(BINDIR)/$(NAME)-win32.exe
+	zip -j $(BINDIR)/$(NAME)-win64-$(VERSION).zip $(BINDIR)/$(NAME)-win64.exe
+	rm -f $(BINDIR)/socks5-darwin-amd64 $(BINDIR)/socks5-darwin-arm64 $(BINDIR)/socks5-linux $(BINDIR)/socks5-win32.exe $(BINDIR)/socks5-win64.exe
 
 clean:
 	rm $(BINDIR)/*
