@@ -23,8 +23,10 @@ It takes just less than 150 lines code
 
 ## Check
 ```
-bin/socks5-target
-curl --proxy "socks5://127.0.0.1:1080" https://blog.xingez.me/ip.php
+# now you can parse address and port via `-a` and `-p`
+
+bin/socks5-target -p 10800
+curl --proxy "socks5://127.0.0.1:10800" https://blog.xingez.me/ip.php
 ```
 
 > https://blog.xingez.me/ip.php is an api that obtains the requestor's IP address
