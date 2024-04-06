@@ -26,7 +26,5 @@ It takes just less than 150 lines code
 # now you can parse address and port via `-a` and `-p`
 
 bin/socks5-target -p 10800
-curl --proxy "socks5://127.0.0.1:10800" https://blog.xingez.me/ip.php
+curl --proxy "socks5://127.0.0.1:10800" ip.sb
 ```
-
-> https://blog.xingez.me/ip.php is an api that obtains the requestor's IP address
